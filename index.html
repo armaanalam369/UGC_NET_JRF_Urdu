@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Urdu NET Arena · UGC NET JRF Paper II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="blobs"><i></i><i></i><i></i></div>
+<main id="app"></main>
+
+<nav class="dock" id="dock">
+  <button data-a="nav" data-v="home"><b>🏠</b>Home</button>
+  <button data-a="nav" data-v="paper"><b>📜</b>Papers</button>
+  <button data-a="nav" data-v="chap"><b>📚</b>Chapters</button>
+  <button data-a="nav" data-v="stats"><b>📈</b>Stats</button>
+</nav>
+
+<div class="fabs">
+  <button class="fab t" data-a="flag" aria-label="Bookmark question">🔖</button>
+  <button class="fab t" data-a="pal" aria-label="Question palette">▦</button>
+  <button class="fab t x" data-a="exit" aria-label="Exit test">✕</button>
+  <button class="fab main" data-a="theme" aria-label="Light or dark mode">🌗</button>
+</div>
+
+<div class="shade" data-a="pal"></div>
+<div id="sheet"></div>
+<div id="toast"></div>
+
+<script src="manifest.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
