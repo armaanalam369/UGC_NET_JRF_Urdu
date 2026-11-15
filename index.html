@@ -1,36 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark" data-pal="royal" data-motion="on">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Urdu NET Arena · UGC NET JRF Paper II</title>
+<meta name="theme-color" content="#050a1c">
+<title>UGC NET JRF Urdu · Paper II · Wise Choice</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
-<div class="blobs"><i></i><i></i><i></i></div>
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header>
+  <span class="brand"><img class="mk" src="logo.png" alt="Wise Choice logo" width="44" height="44"><span><b>Wise Choice</b><small>Your Shortcut through the Syllabus!</small></span></span>
+  <span class="hr" id="hr"></span>
+</header>
+
 <main id="app"></main>
 
-<nav class="dock" id="dock">
-  <button data-a="nav" data-v="home"><b>🏠</b>Home</button>
-  <button data-a="nav" data-v="paper"><b>📜</b>Papers</button>
-  <button data-a="nav" data-v="chap"><b>📚</b>Chapters</button>
-  <button data-a="nav" data-v="stats"><b>📈</b>Stats</button>
-</nav>
+<!-- floating dock (navigation on pages · test tools during a test) -->
+<nav id="dock" aria-label="Navigation"></nav>
 
-<div class="fabs">
-  <button class="fab t" data-a="flag" aria-label="Bookmark question">🔖</button>
-  <button class="fab t" data-a="pal" aria-label="Question palette">▦</button>
-  <button class="fab t x" data-a="exit" aria-label="Exit test">✕</button>
-  <button class="fab main" data-a="theme" aria-label="Light or dark mode">🌗</button>
+<!-- question palette (bottom sheet) -->
+<div class="shade" id="shade" data-act="closegrid"></div>
+<div id="drawer" aria-label="Question palette"></div>
+
+<!-- rough pad + calculator -->
+<div id="tools" aria-label="Rough work pad and calculator">
+  <div class="thead">
+    <div class="row"><button class="chip on" id="tabPad" data-act="ttab" data-v="pad">✏️ Rough pad</button><button class="chip" id="tabCalc" data-act="ttab" data-v="calc">🧮 Calculator</button></div>
+    <button class="btn g s" data-act="toolsclose">✕ Close</button>
+  </div>
+  <div id="padWrap">
+    <div class="ptools">
+      <button class="dot on" data-pc="auto" data-act="padcol" data-v="auto" style="background:var(--tx)" aria-label="Default ink"></button>
+      <button class="dot" data-pc="#ef4444" data-act="padcol" data-v="#ef4444" style="background:#ef4444" aria-label="Red"></button>
+      <button class="dot" data-pc="#3b82f6" data-act="padcol" data-v="#3b82f6" style="background:#3b82f6" aria-label="Blue"></button>
+      <button class="dot" data-pc="#10b981" data-act="padcol" data-v="#10b981" style="background:#10b981" aria-label="Green"></button>
+      <button class="chip" id="bErase" data-act="paderase">🧽 Eraser</button>
+      <button class="chip" data-act="padundo">↩ Undo</button>
+      <button class="chip" data-act="padclear">Clear</button>
+    </div>
+    <canvas id="pad"></canvas>
+  </div>
+  <div id="calcWrap" style="display:none">
+    <div class="cdisp"><small id="cexp"></small><b id="cval">0</b></div>
+    <div class="ckeys" id="ckeys"></div>
+  </div>
 </div>
 
-<div class="shade" data-a="pal"></div>
-<div id="sheet"></div>
-<div id="toast"></div>
+<input type="file" id="imp" accept=".json,application/json" style="display:none">
 
-<script src="manifest.js"></script>
+<!-- overlays -->
+<div class="ov" id="pause"><div class="ovc">
+  <div class="big">⏸</div><h2 style="margin-top:6px">Test paused</h2>
+  <p class="mu" style="margin:6px 0 16px">The timer is stopped · <b id="pLeft"></b> left.<br>Questions are hidden while paused.</p>
+  <div class="row" style="justify-content:center"><button class="btn" data-act="unpause">▶ Resume</button><button class="btn g" data-act="pauseexit">Save &amp; exit</button></div>
+</div></div>
+<div class="ov dim" id="warn"><div class="ovc">
+  <div class="big">⚠️</div><h2 style="margin-top:6px">You left full-screen</h2>
+  <p class="mu" style="margin:6px 0 16px">In the real exam this would be flagged. Your timer is still running.</p>
+  <div class="row" style="justify-content:center"><button class="btn" data-act="fsback">Return to full-screen</button><button class="btn g" data-act="fsskip">Continue</button></div>
+</div></div>
+<div class="ov dim" id="subm"><div class="ovc" id="subc"></div></div>
+<div class="ov dim" id="subj"></div>
+<div class="ov dim" id="tour"></div>
+<canvas id="cf"></canvas><div id="toast"></div>
+
+<!-- 1) exam rules + subjects (syllabus units) + quotes + list of paper files -->
+<script src="data/manifest.js"></script>
+<!-- 2) app logic (papers are loaded on demand from the paths in manifest.js) -->
 <script src="app.js"></script>
 </body>
 </html>
