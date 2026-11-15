@@ -1,36 +1,71 @@
 /* =====================================================================
-   Urdu NET Arena — manifest.js
-   Exam rules, the 10 syllabus units, and the list of paper files.
+   Wise Choice · UGC NET / JRF Paper II — data/manifest.js
+   Exam rules, subjects (with their syllabus units), quotes and the list
+   of question-paper files.
 
-   HOW TO ADD A NEW PAPER (2 steps)
-   1. Copy data/2021-1.js, rename it (e.g. data/2022-2.js), change the key
-      at the top to '2022-2', and replace the questions.
-   2. Add one line to PAPER_LIST:  {year:2022, shift:2, file:'data/2022-2.js'}
+      HOW TO ADD A NEW PAPER (every exam cycle = 2 papers a year: June + December)
+   1. Copy any data/*.js file, rename it e.g. data/urdu-2026-december.js,
+      change the id inside it to the same id you use below, and paste questions.
+   2. Add one line to PAPER_LIST:
+        { id:'urdu-2026-december', subject:'urdu', year:2026, session:'December', file:'data/urdu-2026-december.js' }
+   That's all — the paper card appears on the home screen automatically.
+   (Entries whose file is missing are silently hidden.)
    ===================================================================== */
-window.RULES = {
-  examName: 'UGC NET JRF · Urdu · Paper II',
-  fullMinutes: 120,   // time for a full paper
-  marks: 2,           // marks per correct answer (change to 1 if you want a 100-mark paper)
-  negative: 0,        // marks cut per wrong answer
-  shifts: { 1: 'Shift 1', 2: 'Shift 2' },
 
-  /* Syllabus units. In each question, "u" must be the unit number (1-10).
-     Edit these names to match the latest NTA syllabus exactly. */
-  units: [
-    { n: 'Origin & Growth of Urdu Language',       ur: 'اردو زبان کا آغاز و ارتقا',        i: '🌱' },
-    { n: 'History of Urdu Literature',             ur: 'اردو ادب کی تاریخ',               i: '🏛️' },
-    { n: 'Classical Poetry (Ghazal & Masnavi)',    ur: 'کلاسیکی شاعری',                    i: '🪔' },
-    { n: 'Marsiya, Qasida & Nazm',                 ur: 'مرثیہ، قصیدہ اور نظم',             i: '🕯️' },
-    { n: 'Modern Poetry & Movements',              ur: 'جدید شاعری اور تحریکیں',           i: '🌙' },
-    { n: 'Fiction (Dastan, Novel, Afsana)',        ur: 'فکشن: داستان، ناول، افسانہ',       i: '📖' },
-    { n: 'Drama & Non-fiction Prose',              ur: 'ڈراما اور نثر',                    i: '🎭' },
-    { n: 'Criticism & Literary Theory',            ur: 'تنقید اور نظریات',                 i: '🔎' },
-    { n: 'Research, Tadvin & Linguistics',         ur: 'تحقیق، تدوین اور لسانیات',         i: '🧭' },
-    { n: 'Prosody, Rhetoric & Journalism',         ur: 'عروض، بلاغت اور صحافت',            i: '✒️' }
-  ]
+/* ---- Exam rules (edit to match the pattern you want to simulate) ---- */
+window.RULES = {
+  examName: 'UGC NET/JRF · Urdu · Paper II',
+  shortName: 'NET Urdu',
+  totalQuestions: 100,      // questions in a full Paper II
+  marksPerQ: 2,             // 100 questions x 2 marks = 200 marks
+  fullMinutes: 120,         // minutes for a full Paper II (the real exam gives 180 min for Paper I + II together)
+  negative: 0,              // official UGC NET has NO negative marking. Students can still switch on practice negative marking.
+  sessions: ['June', 'December']   // the exam is held twice a year, in a single shift
 };
 
+/* ---- Subject: Urdu (اردو) and its syllabus units ----
+   `i` = icon, `k` = short label used on the radar chart.
+   Unit titles are a working outline — please verify them against the latest official NTA Urdu syllabus
+   and rename here (the "s" field of every question must match the unit name EXACTLY). */
+window.SUBJECTS = [
+  {
+    id: 'urdu', n: 'Urdu (اردو)', short: 'اردو · Urdu', i: '📜',
+    units: [
+      { n: 'Urdu Language: Origin, Development & Linguistics (اردو زبان و لسانیات)', i: '🔤', k: 'Language' },
+      { n: 'Classical Urdu Poetry (کلاسیکی شاعری)',                                   i: '🕌', k: 'Classical' },
+      { n: 'Poetic Genres: Qasida, Masnavi, Marsiya, Rubai (اصنافِ سخن)',               i: '✒️', k: 'Genres' },
+      { n: 'Modern Urdu Poetry & Nazm (جدید شاعری)',                                   i: '🌙', k: 'Modern' },
+      { n: 'Urdu Fiction: Dastan, Novel & Afsana (داستان، ناول، افسانہ)',               i: '📖', k: 'Fiction' },
+      { n: 'Urdu Drama & Theatre (اردو ڈراما)',                                        i: '🎭', k: 'Drama' },
+      { n: 'Non-fiction Prose: Inshaiya, Khaka, Safarnama, Letters (غیر افسانوی نثر)',  i: '✉️', k: 'Prose' },
+      { n: 'Urdu Criticism & Literary Theory (تنقید)',                                 i: '🔍', k: 'Criticism' },
+      { n: 'Research, Tazkira & Textual Editing (تحقیق و تدوین)',                       i: '🔬', k: 'Research' },
+      { n: 'Urdu Journalism, Translation & Literary Movements (صحافت، ترجمہ، تحریکیں)', i: '📰', k: 'Journalism' }
+    ]
+  }
+];
+
+/* ---- Question papers (exam is held twice a year: June + December) ---- */
 window.PAPER_LIST = [
-  { year: 2021, shift: 1, file: 'data/2021-1.js' },
-  { year: 2021, shift: 2, file: 'data/2021-2.js' }
+  { id: 'urdu-2025-december', subject: 'urdu', year: 2025, session: 'December', file: 'data/urdu-2025-december.js' },
+  { id: 'urdu-2025-june',     subject: 'urdu', year: 2025, session: 'June',     file: 'data/urdu-2025-june.js' }
+];
+
+/* ---- Motivational quotes (one per day on the home screen). Add your own! ---- */
+window.QUOTES = [
+  'Consistency beats intensity — one solid hour every day wins the exam.',
+  'Every wrong answer you review today is a mark you keep tomorrow.',
+  'You don\'t need to be perfect. You need to be better than yesterday.',
+  'Discipline is choosing what you want most over what you want now.',
+  'Small daily progress adds up to big results.',
+  'Mock tests are rehearsals. Make your mistakes here, not in the exam hall.',
+  'Your future Assistant Professor self is watching — keep going.',
+  'Don\'t count the days; make the days count.',
+  'Hard work compounds. Start the next question.',
+  'Revision is where marks are made.',
+  'Slow progress is still progress.',
+  'Focus on the process; the JRF will follow.',
+  'Today\'s effort is tomorrow\'s confidence.',
+  'One more unit. One more test. One step closer.',
+  'Be patient with the syllabus, be strict with your schedule.'
 ];
